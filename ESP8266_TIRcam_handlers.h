@@ -25,7 +25,6 @@
   //Put handlers
 
   //Multi handlers
-
   
   //Private handlers
   String& setupFormBuilder( String& htmlForm, String& errMsg );

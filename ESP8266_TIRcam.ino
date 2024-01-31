@@ -72,6 +72,9 @@ Use MLX90640 library for sky temperature sensing
 
 time_t now; //use as 'gmtime(&now);'
 
+DynamicJsonBuffer jsonBuffer(256);
+JsonObject& root = jsonBuffer.createObject();
+
 //MQTT Pubsubclient variables
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -105,7 +108,6 @@ ESP8266HTTPUpdateServer httpUpdater;
 #include "TIRcam_Eeprom.h"
 #include "ESP8266_TIRcamHandlers.h"
 
-
 void setup()
 {
   Serial.begin( 115200, SERIAL_8N1, SERIAL_TX_ONLY);
@@ -114,7 +116,6 @@ void setup()
   
   //Start NTP client
 //  struct timezone tzone;
-  //This seems to default to TZ = 8 hours EAST anyway.
   configTime( TZ_SEC, DST_SEC, timeServer1, timeServer1, timeServer3 );
   //syncTime();
   
@@ -262,7 +263,7 @@ handlerGetSubExposure(void);
 
 //PUT
 
-  //ASCOM handler functions 
+//ASCOM handler functions 
 handlerPutStartX(void);
 handlerPutStartY(void);
 handlerPutBinFactorX(void);
@@ -348,9 +349,6 @@ void loop()
   String output;
   static int loopCount = 0;
   
-  DynamicJsonBuffer jsonBuffer(256);
-  JsonObject& root = jsonBuffer.createObject();
-
   //If we are not connected to WiFi, go home. 
   if ( WiFi.status() != WL_CONNECTED )
   {

@@ -51,41 +51,6 @@ char* Location = nullptr;
 #define TZ_SEC          ((TZ)*3600)
 #define DST_SEC         ((DST_MN)*60)
 
-const String switchTypes[] = {"Relay_NO", "Relay_NC", "PWM", "DAC","Not Selected"};
-const int switchTypesLen = 5;
-enum SwitchType { SWITCH_RELAY_NO, SWITCH_RELAY_NC, SWITCH_PWM, SWITCH_ANALG_DAC, SWITCH_NOT_SELECTED };
-
-/*
- Typical values for PWM And ADC are 0 - 1024/1024, PWM in terms of fraction of the wave is high 
- and DAC in terms of the output voltage as a fraction of Vcc. 
- */
-
-typedef struct 
-{
-  char* description = nullptr;
-  char* switchName = nullptr;
-  enum SwitchType type = SWITCH_RELAY_NO;
-  int pin = -1; //Use for DAC and PWM outputs
-  bool writeable = true;       //Flag - can a user change this after initial setup 
-  float min = 0.0;
-  float max = 1.0;
-  float step = 1.0;
-  float value = 0.0F;
-} SwitchEntry;
-
-#define DEFAULT_NUM_SWITCHES 4;
-const int defaultNumSwitches = DEFAULT_NUM_SWITCHES;
-//Define the maximum number of switches supported - limited by memory really 
-const int MAXSWITCH = 16;
-const int MAX_NAME_LENGTH = 40;
-
-//define the max resolution available to control a DAC or PWM
-const int MAX_DIGITAL_STEPS = 1024; //Limited by PWM resolution
-//Value limits
-const float MAXDIGITALVAL = 1024.0F; //ie 12 bit PWM and DAC resolution supported.  Vcc assumed max range.
-const float MAXBINARYVAL = 1.0F;      // true or false ? open or closed settings on relay. 
-const float MINVAL = 0.0F;
-
 //Pin limits
 const int NULLPIN = -1; 
 #if defined ESP8266_01
