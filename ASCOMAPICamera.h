@@ -5,6 +5,35 @@ File to be included into relevant device REST setup
 #if !defined _ASCOMAPICamera_rest_h_
 #define _ASCOMAPICamera_rest_h_
 
+//Can
+/​/camera​/{device_number}​/canabortexposure
+//Indicates whether the camera can abort exposures.
+void handlerGetCanAbortExposure(void);
+
+/​/camera​/{device_number}​/canasymmetricbin
+//Indicates whether the camera supports asymmetric binning
+void handlerGetcanAsymmetricBin(void);
+
+/​/camera​/{device_number}​/canfastreadout
+//Indicates whether the camera has a fast readout mode.
+void handlerGetCanFastReadout(void);
+​
+//camera​/{device_number}​/cangetcoolerpower
+//Indicates whether the camera's cooler power setting can be read.
+void handlerGetCanGetCoolerPower(void);
+​
+//camera​/{device_number}​/canpulseguide
+//Returns a flag indicating whether this camera supports pulse guiding
+void handlerGetCanPulseGuide(void);
+​
+//camera​/{device_number}​/cansetccdtemperature
+//Returns a flag indicating whether this camera supports setting the CCD temperature
+void handlerGetCanSetCCDTemperature(void);
+​
+//camera​/{device_number}​/canstopexposure
+//Returns a flag indicating whether this camera can stop an exposure that is in progress
+void handlerGetCanStopExposure(void);
+
 //GET
 // ​/camera​/{device_number}​/bayeroffsetx
 //Returns the X offset of the Bayer matrix.
@@ -34,33 +63,6 @@ void handlerGetCameraXSize(void);
 //Returns the height of the CCD camera chip.
 void handlerGetCameraYSize(void);
 
-/​/camera​/{device_number}​/canabortexposure
-//Indicates whether the camera can abort exposures.
-void handlerGetCanAbortExposure(void);
-
-/​/camera​/{device_number}​/canasymmetricbin
-//Indicates whether the camera supports asymmetric binning
-void handlerGetcanAsymmetricBin(void);
-
-/​/camera​/{device_number}​/canfastreadout
-//Indicates whether the camera has a fast readout mode.
-void handlerGetCanFastReadout(void);
-​
-//camera​/{device_number}​/cangetcoolerpower
-//Indicates whether the camera's cooler power setting can be read.
-void handlerGetCanGetCoolerPower(void);
-​
-//camera​/{device_number}​/canpulseguide
-//Returns a flag indicating whether this camera supports pulse guiding
-void handlerGetCanPulseGuide(void);
-​
-//camera​/{device_number}​/cansetccdtemperature
-//Returns a flag indicating whether this camera supports setting the CCD temperature
-void handlerGetCanSetCCDTemperature(void);
-​
-//camera​/{device_number}​/canstopexposure
-//Returns a flag indicating whether this camera can stop an exposure that is in progress
-void handlerGetCanStopExposure(void);
 ​
 //camera​/{device_number}​/ccdtemperature
 //Returns the current CCD temperature
