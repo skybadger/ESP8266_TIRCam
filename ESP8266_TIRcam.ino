@@ -135,7 +135,7 @@ void setup()
   //I2C setup SDA pin 5, SCL pin 4 on ESP-12
   Wire.begin(0, 2);
   //Wire.begin(5, 4);
-  Wire.setClock(100000 );//100KHz target rate
+  Wire.setClock(400000 );//100KHz target rate
   
   Serial.println("Pins setup & interrupts attached.");
     
@@ -184,18 +184,19 @@ void setup()
   server.on(F("/api/v1/camera/0/supportedactions"),    HTTP_GET, handleSupportedActionsGet );
 
   //ASCOM handler capability functions
+  //server.on(UriRegex("^\\/api\\/v1\\/camera\\/([0-9])\\/can([a-z,A-Z]+)$"), handlerGenericGetCapabilityHandler );
   server.on(F("/api/v1/camera/0/canabortexposure"),    HTTP_GET, handlerGetCanAbortExposure );
   server.on(F("/api/v1/camera/0/canasymmetricbin",     HTTP_GET, handlerGetCanAsymmetricBin );
-  server.on(F("/api/v1/camera/0/canfastreadout",       HTTP_GET, handlerGetCanFastReadout(void);
-  server.on(F("/api/v1/camera/0/cangetcoolerpower",    HTTP_GET, handlerGetCanGetCoolerPower(void);
-  server.on(F("/api/v1/camera/0/canpulseguide",        HTTP_GET, handlerGetCanPulseGuide(void);
-  server.on(F("/api/v1/camera/0/cansetccdtemperature", HTTP_GET, handlerGetCanSetCCDTemperature(void);
-  server.on(F("/api/v1/camera/0/canabortexposure",     HTTP_GET, handlerGetCanStopExposure(void);
+  server.on(F("/api/v1/camera/0/canfastreadout",       HTTP_GET, handlerGetCanFastReadout );
+  server.on(F("/api/v1/camera/0/cangetcoolerpower",    HTTP_GET, handlerGetCanGetCoolerPower );
+  server.on(F("/api/v1/camera/0/canpulseguide",        HTTP_GET, handlerGetCanPulseGuide );
+  server.on(F("/api/v1/camera/0/cansetccdtemperature", HTTP_GET, handlerGetCanSetCCDTemperature );
+  server.on(F("/api/v1/camera/0/canabortexposure",     HTTP_GET, handlerGetCanStopExposure );
 
 //State
   server.on(F("/api/v1/camera/0/camerastate",     HTTP_GET, handlerGetCameraState);
   server.on(F("/api/v1/camera/0/ispulseguiding",  HTTP_GET, handlerGetIsPulseGuiding);
-  server.on(F("/api/v1/camera/0/imageready",      HTTP_GET, handlerGetImageReady(void);
+  server.on(F("/api/v1/camera/0/imageready",      HTTP_GET, handlerGetImageReady);
 
 //Sensor properties
 /*
@@ -264,26 +265,31 @@ handlerGetSubExposure(void);
 //PUT
 
 //ASCOM handler functions 
-handlerPutStartX(void);
-handlerPutStartY(void);
-handlerPutBinFactorX(void);
-handlerPutBinFactorY(void);
-handlerPutSubframeX(void);
-handlerPutSubframeY(void);
 
-handlerPutCoolerEnabled(void);
-handlerPutCCDTemperature(void);
+//handlerPutStartX(void);
+//handlerPutStartY(void);
+server.on(UriRegex("^\\/api\\/v1\\/camera\\/0\\/handlerPutStart([x,X,Y,y])$"), handlerPutStart );
+//handlerPutBinFactorX(void);
+//handlerPutBinFactorY(void);
+server.on(UriRegex("^\\/api\\/v1\\/camera\\/0\\/handlerPutBinFactor([x,X,Y,y])$"), handlerPutBinFactor );
+//handlerPutSubframeX(void);
+//handlerPutSubframeY(void);
+server.on(UriRegex("^\\/api\\/v1\\/camera\\/0\\/handlerPutSubFrame([x,X,Y,y])$"), handlerPutSubFrame );
 
-handlerPutReadoutMode(void);
-handlerPutGain(void);
-handlerPutOffset(void);
-handlerPutSubExposureDuration(void);
-handlerPutAbortExposure(void);
-handlerPutStartExposure(void );
-handlerPutStopExposure ( void );
+//handlerPutCoolerEnabled(void);
+//handlerPutCCDTemperature(void);
+//handlerPutReadoutMode(void);
+//handlerPutGain(void);
+//handlerPutOffset(void);
+//handlerPutSubExposureDuration(void);
+
+//handlerPutAbortExposure(void);
+//handlerPutStartExposure(void);
+//handlerPutStopExposure (void);
+server.on(UriRegex("^\\/api\\/v1\\/camera\\/0\\/handlerPut([a-z, A-Z]+)Exposure$"), handlerPutExposure );
 
 handlerPutPulseGuide(void);
-
+*/
   //Additional ASCOM ALPACA Management setup calls
   //Per device
   //TODO - split whole device setup from per-instance driver setup e.g. hostname, alpaca port to device compared to ccal setup on the driver, 
@@ -348,14 +354,8 @@ void loop()
   String timestamp;
   String output;
   static int loopCount = 0;
-  
-  //If we are not connected to WiFi, go home. 
-  if ( WiFi.status() != WL_CONNECTED )
-  {
-    device.restart();
-  }
-  
-  if( newDataFlag == true ) //every second
+   
+  if( newDataFlag == true )
   {
     //Serial.printf( "Time: %s \n", getTimeAsString2( timestamp ).c_str() );
     root["time"] = getTimeAsString2( timestamp );
